@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Property inquiry</title>
+<style>
+  body { font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif; background: #f4f5f7; margin: 0; padding: 32px 16px; }
+  form { max-width: 480px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  h2 { margin: 0; font-size: 20px; }
+  .lang { background: none; border: 1px solid #d1d5db; border-radius: 8px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 14px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 4px; }
+  input, select, textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 10px; background: #fff; }
+  input[type=tel], input[type=email] { direction: ltr; }
+  [dir=rtl] input[type=tel], [dir=rtl] input[type=email] { text-align: right; }
+  textarea { min-height: 100px; }
+  .choice { display: flex; gap: 10px; }
+  .choice label { flex: 1; font-weight: 500; margin: 0; border: 1px solid #d1d5db; border-radius: 10px; padding: 10px; cursor: pointer; text-align: center; }
+  .choice input { width: auto; margin-inline-end: 6px; }
+  .hp { position: absolute; left: -9999px; }
+  button[type=submit] { margin-top: 18px; width: 100%; padding: 12px; font: inherit; font-weight: 600; color: #fff; background: #0f766e; border: 0; border-radius: 10px; cursor: pointer; }
+  #status { margin-top: 12px; font-size: 14px; }
+  .err { color: #b91c1c; }
+</style>
+</head>
+<body>
+<!-- Set ENDPOINT to where lead_intake/server.py runs. Listing pages can link here with ?listing=JED-LND-0142 -->
+<form id="inquiry" novalidate>
+  <div class="top">
+    <h2 data-t="title"></h2>
+    <button type="button" class="lang" id="switch"></button>
+  </div>
+
+  <label for="name" data-t="name"></label><input id="name" name="name" autocomplete="name" required>
+  <label for="phone" data-t="phone"></label><input id="phone" name="phone" type="tel" placeholder="05X XXX XXXX" autocomplete="tel">
+  <label for="email" data-t="email"></label><input id="email" name="email" type="email" autocomplete="email">
+
+  <label data-t="interest"></label>
+  <div class="choice">
+    <label><input type="radio" name="interest" value="buy" checked><span data-t="buy"></span></label>
+    <label><input type="radio" name="interest" value="rent"><span data-t="rent"></span></label>
+  </div>
+
+  <label for="asset_type" data-t="asset_type"></label>
+  <select id="asset_type" name="asset_type">
+    <option value="land" data-t="land"></option>
+    <option value="office" data-t="office"></option>
+    <option value="retail" data-t="retail"></option>
+    <option value="apartment_building" data-t="apartment"></option>
+  </select>
+
+  <label for="city" data-t="city"></label>
+  <select id="city" name="city">
+    <option value="riyadh" data-t="riyadh"></option>
+    <option value="jeddah" data-t="jeddah"></option>
+    <option value="dammam" data-t="dammam"></option>
+    <option value="khobar" data-t="khobar"></option>
+    <option value="makkah" data-t="makkah"></option>
+    <option value="madinah" data-t="madinah"></option>
+    <option value="other" data-t="other"></option>
+  </select>
+
+  <label for="budget" data-t="budget"></label><input id="budget" name="budget" inputmode="numeric">
+  <label for="message" data-t="message"></label><textarea id="message" name="message"></textarea>
+
+  <input type="hidden" name="listing_id" id="listing_id">
+  <input class="hp" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button type="submit" data-t="send"></button>
+  <div id="status" role="status"></div>
+</form>
+<script>
+const ENDPOINT = "https://leads.example.com/leads/website";
+
+const T = {
+  ar: { title: "استفسار عن عقار", name: "الاسم", phone: "رقم الجوال", email: "البريد الإلكتروني",
+        interest: "أرغب في", buy: "الشراء", rent: "الاستئجار", asset_type: "نوع العقار",
+        land: "أرض", office: "مكتب", retail: "محل تجاري", apartment: "شقة / عمارة سكنية",
+        city: "المدينة", riyadh: "الرياض", jeddah: "جدة", dammam: "الدمام", khobar: "الخبر",
+        makkah: "مكة المكرمة", madinah: "المدينة المنورة", other: "أخرى",
+        budget: "الميزانية التقريبية (ريال)", message: "تفاصيل إضافية", send: "إرسال", switchTo: "English",
+        sending: "جارٍ الإرسال…", failed: "تعذر الإرسال، حاول مرة أخرى أو اتصل بنا.",
+        errors: { name: "الاسم مطلوب", email: "البريد الإلكتروني غير صحيح", phone: "رقم الجوال غير صحيح",
+                  contact: "أدخل رقم الجوال أو البريد الإلكتروني" } },
+  en: { title: "Property inquiry", name: "Full name", phone: "Mobile number", email: "Email",
+        interest: "I want to", buy: "Buy", rent: "Rent", asset_type: "Property type",
+        land: "Land plot", office: "Office", retail: "Shop / retail", apartment: "Apartment / building",
+        city: "City", riyadh: "Riyadh", jeddah: "Jeddah", dammam: "Dammam", khobar: "Al Khobar",
+        makkah: "Makkah", madinah: "Madinah", other: "Other",
+        budget: "Approximate budget (SAR)", message: "Anything else we should know", send: "Send", switchTo: "العربية",
+        sending: "Sending…", failed: "Could not send. Please try again or call us.",
+        errors: { name: "Please enter your name", email: "Email looks wrong", phone: "Mobile number looks wrong",
+                  contact: "Enter a mobile number or an email" } },
+};
+
+let lang = (navigator.language || "ar").startsWith("ar") ? "ar" : "en";
+const form = document.getElementById("inquiry"), status = document.getElementById("status");
+
+function render() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = T[lang][el.dataset.t]; });
+  document.getElementById("switch").textContent = T[lang].switchTo;
+}
+document.getElementById("switch").addEventListener("click", () => { lang = lang === "ar" ? "en" : "ar"; render(); });
+document.getElementById("listing_id").value = new URLSearchParams(location.search).get("listing") || "";
+render();
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form));
+  data.lang = lang;
+  status.className = "";
+  status.textContent = T[lang].sending;
+  try {
+    const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const res = await r.json();
+    if (res.ok) { status.textContent = res.message || ""; form.reset(); return; }
+    status.className = "err";
+    status.textContent = (res.errors || []).map(k => T[lang].errors[k] || T[lang].failed).join(" · ");
+  } catch (err) {
+    status.className = "err";
+    status.textContent = T[lang].failed;
+  }
+});
+</script>
+</body>
+</html>

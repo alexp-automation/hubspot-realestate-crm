@@ -1,0 +1,84 @@
+[
+  {
+    "description": "Website, English, wants to buy a plot from a listing page",
+    "channel": "website",
+    "payload": {
+      "name": "  Faisal Al-Otaibi ", "email": "Faisal.Otaibi@example.com", "phone": "050 123 4567",
+      "interest": "buy", "asset_type": "land", "city": "Jeddah", "budget": "2,500,000",
+      "listing_id": "jed-lnd-0142", "message": "Interested in the Al Shati plot. Is the deed ready for transfer?",
+      "company_website": ""
+    }
+  },
+  {
+    "description": "Website, Arabic, office space for a company, Arabic digits in phone",
+    "channel": "website",
+    "payload": {
+      "name": "نورة القحطاني", "email": "noura@example.sa", "phone": "٠٥٥٩٨٧٦٥٤٣",
+      "company": "شركة الأفق للاستشارات", "interest": "rent", "asset_type": "office", "city": "الرياض",
+      "budget": "250 ألف", "message": "نبحث عن مكتب بمساحة ٣٠٠ متر مربع في حي العليا، عقد لمدة ثلاث سنوات.",
+      "company_website": ""
+    }
+  },
+  {
+    "description": "Website, no intent field, message mentions a shop in a strip mall",
+    "channel": "website",
+    "payload": {
+      "name": "Omar Haddad", "email": "", "phone": "+966 54 222 3344",
+      "city": "Khobar", "message": "Do you have a shop available in the strip mall on Prince Turki street?",
+      "company_website": ""
+    }
+  },
+  {
+    "description": "Meta Lead Ad (Facebook), English, apartment for rent",
+    "channel": "meta",
+    "payload": {
+      "id": "1203456789012345", "created_time": "2026-10-06T08:15:22+0000", "platform": "fb",
+      "form_id": "889900112233", "ad_id": "120211000000001",
+      "field_data": [
+        {"name": "full_name", "values": ["Sara Mansour"]},
+        {"name": "email", "values": ["sara.mansour@example.com"]},
+        {"name": "phone_number", "values": ["+966561112233"]},
+        {"name": "city", "values": ["Jeddah"]},
+        {"name": "what_are_you_looking_for?", "values": ["Rent an apartment"]},
+        {"name": "budget", "values": ["90k per year"]}
+      ]
+    }
+  },
+  {
+    "description": "Meta Lead Ad (Instagram), Arabic, land purchase, webhook envelope",
+    "channel": "meta",
+    "payload": {
+      "object": "page",
+      "entry": [{
+        "id": "104455667788", "time": 1791273600,
+        "changes": [{
+          "field": "leadgen",
+          "value": {
+            "leadgen_id": "1209988776655443", "form_id": "889900112244", "page_id": "104455667788",
+            "platform": "ig",
+            "field_data": [
+              {"name": "full_name", "values": ["عبدالله الشهري"]},
+              {"name": "phone_number", "values": ["00966 50 765 4321"]},
+              {"name": "city", "values": ["جدة"]},
+              {"name": "looking_for", "values": ["شراء أرض سكنية"]},
+              {"name": "budget", "values": ["٤ مليون"]}
+            ]
+          }
+        }]
+      }]
+    }
+  },
+  {
+    "description": "Bot submission caught by the honeypot field",
+    "channel": "website",
+    "payload": {
+      "name": "Best SEO", "email": "seo@spam.example", "phone": "0501111111",
+      "message": "Cheap backlinks", "company_website": "http://spam.example"
+    }
+  },
+  {
+    "description": "Broken submission: no name, bad email, invalid phone",
+    "channel": "website",
+    "payload": {"name": "", "email": "not-an-email", "phone": "12345", "message": "", "company_website": ""}
+  }
+]

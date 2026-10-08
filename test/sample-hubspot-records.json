@@ -1,0 +1,36 @@
+{
+  "contacts": [
+    {"id": "101", "properties": {
+      "firstname": "Faisal", "lastname": "Al-Otaibi", "email": "faisal.otaibi@example.com",
+      "phone": "+966501234567", "preferred_city": "jeddah", "client_type": "individual",
+      "budget_range_sar": "buy_1m_3m", "preferred_asset_type": "land", "preferred_language": "en",
+      "re_lead_source": "website_form", "kyc_status": "verified",
+      "lastmodifieddate": "2026-10-06T09:12:33.120Z"}},
+    {"id": "102", "properties": {
+      "firstname": "نورة", "lastname": "القحطاني", "email": "noura@example.sa", "jobtitle": "مديرة العمليات",
+      "phone": "+966559876543", "preferred_city": "riyadh", "client_type": "company",
+      "budget_range_sar": "rent_100k_300k", "preferred_asset_type": "office", "preferred_language": "ar",
+      "re_lead_source": "instagram_lead_ad", "lastmodifieddate": "2026-10-07T14:01:00Z"}}
+  ],
+  "companies": [
+    {"id": "5001", "properties": {
+      "name": "شركة الأفق للاستشارات", "domain": "alofuq.example.sa", "phone": "+966112345678",
+      "city": "Riyadh", "commercial_registration_no": "1010123456", "vat_number": "300123456700003",
+      "hs_lastmodifieddate": "2026-10-07T14:05:00Z"}}
+  ],
+  "deals": [
+    {"id": "9001", "associations": {"contacts": ["101"], "companies": []}, "properties": {
+      "dealname": "Faisal Al-Otaibi · Land plot · Jeddah", "amount": "2350000", "closedate": "2026-10-05T12:00:00Z",
+      "deal_type": "sale", "asset_type": "land", "agreed_price_sar": "2350000", "payment_schedule": "bank_finance",
+      "hs_is_closed_won": "true", "hs_lastmodifieddate": "2026-10-05T12:30:00Z"}},
+    {"id": "9002", "associations": {"contacts": ["102"], "companies": ["5001"]}, "properties": {
+      "dealname": "نورة القحطاني · Office · Riyadh", "amount": "780000", "closedate": "2026-10-07T10:00:00Z",
+      "deal_type": "lease", "asset_type": "office", "annual_rent_sar": "260000", "lease_term_months": "36",
+      "lease_start_date": "2026-11-01", "lease_end_date": "2029-10-31", "payment_schedule": "quarterly",
+      "ejar_contract_number": "20261007-4471-0193", "hs_is_closed_won": "true",
+      "hs_lastmodifieddate": "2026-10-07T10:15:00Z"}},
+    {"id": "9003", "associations": {"contacts": ["101"]}, "properties": {
+      "dealname": "Open deal, not synced", "hs_is_closed_won": "false",
+      "hs_lastmodifieddate": "2026-10-07T11:00:00Z"}}
+  ]
+}

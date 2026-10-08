@@ -1,0 +1,82 @@
+{
+  "api_version": "v9.2",
+  "alternate_key": "new_hubspotid",
+  "conflict_rule": "Each field has an owner. owner=hubspot: HubSpot value always wins. owner=dynamics: never pushed from HubSpot (Dynamics is the source, e.g. finance and compliance data). owner=both: the side with the later record modification time wins (HubSpot hs_lastmodifieddate vs Dynamics modifiedon).",
+  "notes": [
+    "Create a text column new_hubspotid (max 20) and an alternate key on it for contact, account and opportunity.",
+    "Choice values below assume the default publisher option prefix (100000000). Adjust to your solution.",
+    "Money fields use the organization base currency, so set SAR as base currency or add transactioncurrencyid."
+  ],
+  "entities": [
+    {
+      "hubspot_object": "contacts",
+      "dynamics_entity": "contact",
+      "entity_set": "contacts",
+      "modified_property": "lastmodifieddate",
+      "fields": [
+        {"hubspot": "firstname", "dynamics": "firstname", "owner": "both"},
+        {"hubspot": "lastname", "dynamics": "lastname", "owner": "both"},
+        {"hubspot": "email", "dynamics": "emailaddress1", "owner": "both"},
+        {"hubspot": "jobtitle", "dynamics": "jobtitle", "owner": "both"},
+        {"hubspot": "phone", "dynamics": "mobilephone", "owner": "hubspot"},
+        {"hubspot": "preferred_city", "dynamics": "address1_city", "owner": "hubspot", "transform": "map",
+         "map": {"riyadh": "Riyadh", "jeddah": "Jeddah", "dammam": "Dammam", "khobar": "Al Khobar",
+                 "makkah": "Makkah", "madinah": "Madinah", "other": "Other"}},
+        {"hubspot": "client_type", "dynamics": "new_clienttype", "owner": "hubspot", "transform": "choice",
+         "map": {"individual": 100000000, "company": 100000001}},
+        {"hubspot": "budget_range_sar", "dynamics": "new_budgetrange", "owner": "hubspot"},
+        {"hubspot": "preferred_asset_type", "dynamics": "new_preferredassettype", "owner": "hubspot", "transform": "choice",
+         "map": {"land": 100000000, "office": 100000001, "retail": 100000002, "apartment_building": 100000003}},
+        {"hubspot": "preferred_language", "dynamics": "new_preferredlanguage", "owner": "hubspot", "transform": "choice",
+         "map": {"ar": 100000000, "en": 100000001}},
+        {"hubspot": "re_lead_source", "dynamics": "new_leadsource", "owner": "hubspot"},
+        {"hubspot": "kyc_status", "dynamics": "new_kycstatus", "owner": "dynamics"},
+        {"hubspot": "erp_customer_number", "dynamics": "new_erpcustomernumber", "owner": "dynamics"}
+      ]
+    },
+    {
+      "hubspot_object": "companies",
+      "dynamics_entity": "account",
+      "entity_set": "accounts",
+      "modified_property": "hs_lastmodifieddate",
+      "fields": [
+        {"hubspot": "name", "dynamics": "name", "owner": "both"},
+        {"hubspot": "phone", "dynamics": "telephone1", "owner": "both"},
+        {"hubspot": "domain", "dynamics": "websiteurl", "owner": "hubspot"},
+        {"hubspot": "city", "dynamics": "address1_city", "owner": "hubspot"},
+        {"hubspot": "commercial_registration_no", "dynamics": "new_crnumber", "owner": "both"},
+        {"hubspot": "vat_number", "dynamics": "new_vatnumber", "owner": "dynamics"},
+        {"hubspot": "erp_customer_number", "dynamics": "accountnumber", "owner": "dynamics"}
+      ]
+    },
+    {
+      "hubspot_object": "deals",
+      "dynamics_entity": "opportunity",
+      "entity_set": "opportunities",
+      "modified_property": "hs_lastmodifieddate",
+      "only_when": {"property": "hs_is_closed_won", "value": "true"},
+      "mark_won": {"action": "WinOpportunity", "statecode": 1, "statuscode": 3},
+      "fields": [
+        {"hubspot": "dealname", "dynamics": "name", "owner": "hubspot"},
+        {"hubspot": "amount", "dynamics": "estimatedvalue", "owner": "hubspot", "transform": "number"},
+        {"hubspot": "closedate", "dynamics": "estimatedclosedate", "owner": "hubspot", "transform": "date"},
+        {"hubspot": "deal_type", "dynamics": "new_dealtype", "owner": "hubspot", "transform": "choice",
+         "map": {"sale": 100000000, "lease": 100000001, "renewal": 100000002}},
+        {"hubspot": "asset_type", "dynamics": "new_assettype", "owner": "hubspot", "transform": "choice",
+         "map": {"land": 100000000, "office": 100000001, "retail": 100000002, "apartment_building": 100000003}},
+        {"hubspot": "agreed_price_sar", "dynamics": "new_agreedprice", "owner": "hubspot", "transform": "number"},
+        {"hubspot": "annual_rent_sar", "dynamics": "new_annualrent", "owner": "hubspot", "transform": "number"},
+        {"hubspot": "lease_term_months", "dynamics": "new_leasetermmonths", "owner": "hubspot", "transform": "number"},
+        {"hubspot": "lease_start_date", "dynamics": "new_leasestartdate", "owner": "hubspot", "transform": "date"},
+        {"hubspot": "lease_end_date", "dynamics": "new_leaseenddate", "owner": "hubspot", "transform": "date"},
+        {"hubspot": "payment_schedule", "dynamics": "new_paymentschedule", "owner": "hubspot"},
+        {"hubspot": "ejar_contract_number", "dynamics": "new_ejarcontractnumber", "owner": "both"},
+        {"hubspot": "erp_invoice_status", "dynamics": "new_invoicestatus", "owner": "dynamics"}
+      ],
+      "lookups": [
+        {"association": "contacts", "dynamics": "parentcontactid@odata.bind", "entity_set": "contacts"},
+        {"association": "companies", "dynamics": "parentaccountid@odata.bind", "entity_set": "accounts"}
+      ]
+    }
+  ]
+}

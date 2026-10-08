@@ -1,0 +1,250 @@
+{
+  "portal": {
+    "currency": "SAR",
+    "timezone": "Asia/Riyadh",
+    "note": "Internal names re_property / re_unit avoid clashing with the word 'property' used everywhere in the HubSpot API. Labels shown to users are 'Property' and 'Unit'."
+  },
+
+  "custom_objects": [
+    {
+      "name": "re_property",
+      "labels": {"singular": "Property", "plural": "Properties"},
+      "group": {"name": "re_property_details", "label": "Property details"},
+      "primary_display_property": "property_name",
+      "secondary_display_properties": ["listing_id", "city"],
+      "searchable_properties": ["property_name", "listing_id", "deed_number", "district"],
+      "required_properties": ["property_name", "listing_id", "asset_type", "city"],
+      "properties": [
+        {"name": "property_name", "label": "Property name", "type": "text"},
+        {"name": "listing_id", "label": "Listing ID", "type": "text", "unique": true,
+         "description": "Public listing code used on the website, e.g. JED-LND-0142"},
+        {"name": "asset_type", "label": "Asset type", "type": "select", "options": [
+          ["land", "Land plot"], ["office", "Office building"],
+          ["retail", "Retail (strip mall)"], ["apartment_building", "Apartment building"]]},
+        {"name": "city", "label": "City", "type": "select", "options": [
+          ["riyadh", "Riyadh"], ["jeddah", "Jeddah"], ["dammam", "Dammam"], ["khobar", "Al Khobar"],
+          ["makkah", "Makkah"], ["madinah", "Madinah"], ["other", "Other"]]},
+        {"name": "district", "label": "District", "type": "text"},
+        {"name": "plot_area_sqm", "label": "Plot area (m²)", "type": "number"},
+        {"name": "built_up_area_sqm", "label": "Built-up area (m²)", "type": "number"},
+        {"name": "zoning", "label": "Zoning", "type": "select", "options": [
+          ["residential", "Residential"], ["commercial", "Commercial"], ["mixed_use", "Mixed use"],
+          ["industrial", "Industrial"], ["agricultural", "Agricultural"]]},
+        {"name": "deed_number", "label": "Deed number (صك)", "type": "text"},
+        {"name": "asking_price_sar", "label": "Asking price (SAR)", "type": "currency"},
+        {"name": "listing_status", "label": "Status", "type": "select", "options": [
+          ["available", "Available"], ["reserved", "Reserved"], ["sold", "Sold"], ["leased", "Leased"]]},
+        {"name": "total_units", "label": "Total leasable units", "type": "number"},
+        {"name": "location_url", "label": "Location (map link)", "type": "text"}
+      ]
+    },
+    {
+      "name": "re_unit",
+      "labels": {"singular": "Unit", "plural": "Units"},
+      "group": {"name": "re_unit_details", "label": "Unit details"},
+      "primary_display_property": "unit_number",
+      "secondary_display_properties": ["unit_status", "asking_annual_rent_sar"],
+      "searchable_properties": ["unit_number", "ejar_contract_number"],
+      "required_properties": ["unit_number", "unit_status"],
+      "properties": [
+        {"name": "unit_number", "label": "Unit number", "type": "text"},
+        {"name": "floor", "label": "Floor", "type": "number"},
+        {"name": "unit_type", "label": "Unit type", "type": "select", "options": [
+          ["office", "Office"], ["shop", "Shop"], ["apartment", "Apartment"], ["kiosk", "Kiosk"]]},
+        {"name": "unit_area_sqm", "label": "Area (m²)", "type": "number"},
+        {"name": "asking_annual_rent_sar", "label": "Asking annual rent (SAR)", "type": "currency"},
+        {"name": "unit_status", "label": "Status", "type": "select", "options": [
+          ["vacant", "Vacant"], ["reserved", "Reserved"], ["leased", "Leased"]]},
+        {"name": "lease_end_date", "label": "Lease end date", "type": "date"},
+        {"name": "ejar_contract_number", "label": "Ejar contract number", "type": "text"}
+      ]
+    }
+  ],
+
+  "property_groups": {
+    "contacts": [{"name": "re_client_profile", "label": "Buyer / tenant profile"}],
+    "companies": [{"name": "re_company_profile", "label": "Company registration"}],
+    "deals": [{"name": "re_deal_details", "label": "Real estate deal details"}]
+  },
+
+  "properties": {
+    "contacts": [
+      {"name": "client_type", "label": "Buyer / tenant type", "type": "select", "group": "re_client_profile",
+       "options": [["individual", "Individual"], ["company", "Company"]]},
+      {"name": "budget_range_sar", "label": "Budget range (SAR)", "type": "select", "group": "re_client_profile",
+       "options": [
+         ["buy_under_1m", "Purchase: under 1M"], ["buy_1m_3m", "Purchase: 1M to 3M"],
+         ["buy_3m_10m", "Purchase: 3M to 10M"], ["buy_10m_plus", "Purchase: 10M+"],
+         ["rent_under_100k", "Rent per year: under 100K"], ["rent_100k_300k", "Rent per year: 100K to 300K"],
+         ["rent_300k_1m", "Rent per year: 300K to 1M"], ["rent_1m_plus", "Rent per year: 1M+"]]},
+      {"name": "preferred_asset_type", "label": "Preferred asset type", "type": "select", "group": "re_client_profile",
+       "options": [["land", "Land plot"], ["office", "Office"], ["retail", "Retail (strip mall)"],
+                   ["apartment_building", "Apartment / apartment building"]]},
+      {"name": "preferred_city", "label": "Preferred city", "type": "select", "group": "re_client_profile",
+       "options": [["riyadh", "Riyadh"], ["jeddah", "Jeddah"], ["dammam", "Dammam"], ["khobar", "Al Khobar"],
+                   ["makkah", "Makkah"], ["madinah", "Madinah"], ["other", "Other"]]},
+      {"name": "re_lead_source", "label": "Lead source (first touch)", "type": "select", "group": "re_client_profile",
+       "options": [["website_form", "Website form"], ["facebook_lead_ad", "Facebook lead ad"],
+                   ["instagram_lead_ad", "Instagram lead ad"], ["google_ads", "Google Ads"],
+                   ["whatsapp", "WhatsApp"], ["referral", "Referral"], ["broker", "Broker"], ["walk_in", "Walk-in"]]},
+      {"name": "preferred_language", "label": "Preferred language", "type": "select", "group": "re_client_profile",
+       "options": [["ar", "Arabic"], ["en", "English"]]},
+      {"name": "kyc_status", "label": "KYC status (from Dynamics)", "type": "select", "group": "re_client_profile",
+       "options": [["not_started", "Not started"], ["pending", "Pending"], ["verified", "Verified"], ["rejected", "Rejected"]]},
+      {"name": "erp_customer_number", "label": "ERP customer number (from Dynamics)", "type": "text", "group": "re_client_profile"}
+    ],
+    "companies": [
+      {"name": "commercial_registration_no", "label": "Commercial registration (CR) no.", "type": "text", "group": "re_company_profile"},
+      {"name": "vat_number", "label": "VAT number (from Dynamics)", "type": "text", "group": "re_company_profile"},
+      {"name": "erp_customer_number", "label": "ERP customer number (from Dynamics)", "type": "text", "group": "re_company_profile"}
+    ],
+    "deals": [
+      {"name": "deal_type", "label": "Deal type", "type": "select", "group": "re_deal_details",
+       "options": [["sale", "Land sale"], ["lease", "New lease"], ["renewal", "Lease renewal"]]},
+      {"name": "asset_type", "label": "Asset type", "type": "select", "group": "re_deal_details",
+       "options": [["land", "Land plot"], ["office", "Office"], ["retail", "Retail (strip mall)"],
+                   ["apartment_building", "Apartment / apartment building"]]},
+      {"name": "purchase_purpose", "label": "Purpose", "type": "select", "group": "re_deal_details",
+       "options": [["investment", "Investment"], ["own_use", "Own use"], ["development", "Development"]]},
+      {"name": "budget_confirmed_sar", "label": "Confirmed budget (SAR)", "type": "currency", "group": "re_deal_details"},
+      {"name": "site_visit_date", "label": "Site visit / viewing date", "type": "date", "group": "re_deal_details"},
+      {"name": "offered_price_sar", "label": "Offered price (SAR)", "type": "currency", "group": "re_deal_details"},
+      {"name": "agreed_price_sar", "label": "Agreed price (SAR)", "type": "currency", "group": "re_deal_details"},
+      {"name": "payment_schedule", "label": "Payment schedule", "type": "select", "group": "re_deal_details",
+       "options": [["cash_full", "Cash, in full"], ["installments", "Installments"], ["bank_finance", "Bank financing"],
+                   ["annual", "Rent: annual"], ["semi_annual", "Rent: semi-annual"],
+                   ["quarterly", "Rent: quarterly"], ["monthly", "Rent: monthly"]]},
+      {"name": "deed_check_status", "label": "Deed check", "type": "select", "group": "re_deal_details",
+       "options": [["pending", "Pending"], ["clear", "Clear"], ["issue_found", "Issue found"]]},
+      {"name": "annual_rent_sar", "label": "Annual rent (SAR)", "type": "currency", "group": "re_deal_details"},
+      {"name": "lease_term_months", "label": "Lease term (months)", "type": "number", "group": "re_deal_details"},
+      {"name": "lease_start_date", "label": "Lease start date", "type": "date", "group": "re_deal_details"},
+      {"name": "lease_end_date", "label": "Lease end date", "type": "date", "group": "re_deal_details"},
+      {"name": "ejar_contract_number", "label": "Ejar contract number", "type": "text", "group": "re_deal_details"},
+      {"name": "renewal_new_rent_sar", "label": "Renewal rent (SAR / year)", "type": "currency", "group": "re_deal_details"},
+      {"name": "lost_reason", "label": "Lost reason", "type": "select", "group": "re_deal_details",
+       "options": [["price", "Price / rent too high"], ["location", "Location"], ["financing", "Financing not approved"],
+                   ["competitor", "Chose another property"], ["not_ready", "Not ready to decide"],
+                   ["documents", "Deed / documents issue"], ["no_response", "No response"], ["other", "Other"]]},
+      {"name": "lost_reason_notes", "label": "Lost reason notes", "type": "textarea", "group": "re_deal_details"},
+      {"name": "re_lead_source", "label": "Lead source", "type": "select", "group": "re_deal_details",
+       "options": [["website_form", "Website form"], ["facebook_lead_ad", "Facebook lead ad"],
+                   ["instagram_lead_ad", "Instagram lead ad"], ["google_ads", "Google Ads"],
+                   ["whatsapp", "WhatsApp"], ["referral", "Referral"], ["broker", "Broker"], ["walk_in", "Walk-in"]]},
+      {"name": "erp_invoice_status", "label": "Invoice status (from Dynamics)", "type": "select", "group": "re_deal_details",
+       "options": [["not_invoiced", "Not invoiced"], ["invoiced", "Invoiced"], ["partially_paid", "Partially paid"], ["paid", "Paid"]]}
+    ]
+  },
+
+  "pipelines": [
+    {
+      "key": "land_sales",
+      "label": "Land Sales",
+      "deal_type": "sale",
+      "intake_stage": "new_inquiry",
+      "stages": [
+        {"key": "new_inquiry", "label": "New inquiry", "probability": 0.05, "required_properties": [],
+         "entry": "Any buy / land inquiry from website, social ads, phone or walk-in.",
+         "exit": "First call done: budget, purpose and timeline known."},
+        {"key": "qualified", "label": "Qualified", "probability": 0.10,
+         "required_properties": ["budget_confirmed_sar", "purchase_purpose", "asset_type"],
+         "entry": "Budget and purpose confirmed, budget fits at least one available plot.",
+         "exit": "Site visit booked."},
+        {"key": "site_visit", "label": "Site visit", "probability": 0.20, "required_properties": ["site_visit_date"],
+         "entry": "Visit date set, plot associated to the deal.",
+         "exit": "Buyer makes a written or verbal price offer."},
+        {"key": "offer_received", "label": "Offer received", "probability": 0.40,
+         "required_properties": ["offered_price_sar", "payment_schedule"],
+         "entry": "Offer amount and payment method recorded.",
+         "exit": "Counter-offer sent or offer accepted in principle."},
+        {"key": "negotiation", "label": "Negotiation", "probability": 0.60, "required_properties": ["offered_price_sar"],
+         "entry": "Price or terms being negotiated.",
+         "exit": "Price agreed, deed check started."},
+        {"key": "due_diligence", "label": "Due diligence & deed check", "probability": 0.80,
+         "required_properties": ["agreed_price_sar", "deed_check_status"],
+         "entry": "Agreed price recorded, deed and zoning being verified.",
+         "exit": "Deed clear and sale contract signed, or a blocking issue found."},
+        {"key": "closed_won", "label": "Closed won (contract signed)", "probability": 1.0,
+         "required_properties": ["agreed_price_sar", "amount", "closedate"],
+         "entry": "Sale contract signed, deposit received.",
+         "exit": "Final. Property status set to Sold."},
+        {"key": "closed_lost", "label": "Closed lost", "probability": 0.0, "required_properties": ["lost_reason"],
+         "entry": "Buyer withdrew or deal blocked. Lost reason is mandatory.",
+         "exit": "Final."}
+      ]
+    },
+    {
+      "key": "leasing",
+      "label": "Leasing",
+      "deal_type": "lease",
+      "intake_stage": "inquiry",
+      "stages": [
+        {"key": "inquiry", "label": "Inquiry", "probability": 0.05, "required_properties": [],
+         "entry": "Any rent / lease inquiry for an office, shop or apartment.",
+         "exit": "Needs known: asset type, size, budget, move-in date."},
+        {"key": "qualified", "label": "Qualified", "probability": 0.15,
+         "required_properties": ["asset_type", "budget_confirmed_sar"],
+         "entry": "Budget and space needs fit at least one vacant unit.",
+         "exit": "Viewing booked."},
+        {"key": "viewing", "label": "Viewing", "probability": 0.30, "required_properties": ["site_visit_date"],
+         "entry": "Viewing date set, unit associated to the deal.",
+         "exit": "Tenant wants the unit, terms requested."},
+        {"key": "terms_proposed", "label": "Terms proposed", "probability": 0.50,
+         "required_properties": ["annual_rent_sar", "lease_term_months", "payment_schedule"],
+         "entry": "Rent, term and payment schedule sent to the tenant.",
+         "exit": "Tenant accepts or counters."},
+        {"key": "negotiation", "label": "Negotiation", "probability": 0.65, "required_properties": ["annual_rent_sar"],
+         "entry": "Rent, free period or fit-out terms being negotiated.",
+         "exit": "Terms agreed."},
+        {"key": "lease_drafting", "label": "Lease drafting (Ejar)", "probability": 0.85,
+         "required_properties": ["annual_rent_sar", "lease_start_date", "lease_term_months"],
+         "entry": "Lease being registered on the Ejar platform.",
+         "exit": "Both sides approved the Ejar contract."},
+        {"key": "signed", "label": "Signed", "probability": 1.0,
+         "required_properties": ["ejar_contract_number", "lease_start_date", "lease_end_date", "amount", "closedate"],
+         "entry": "Ejar contract number recorded. Unit set to Leased, lease end date copied to the unit.",
+         "exit": "Final. A renewal deal is created 90 days before lease end."},
+        {"key": "lost", "label": "Lost", "probability": 0.0, "required_properties": ["lost_reason"],
+         "entry": "Tenant withdrew. Lost reason is mandatory.",
+         "exit": "Final."}
+      ]
+    },
+    {
+      "key": "renewals",
+      "label": "Renewals",
+      "deal_type": "renewal",
+      "intake_stage": "renewal_due",
+      "stages": [
+        {"key": "renewal_due", "label": "Renewal due", "probability": 0.60,
+         "required_properties": ["lease_end_date"],
+         "entry": "Created automatically 90 days before the unit's lease end date.",
+         "exit": "Tenant contacted about renewal."},
+        {"key": "contacted", "label": "Contacted", "probability": 0.70, "required_properties": [],
+         "entry": "Renewal offer discussed with the tenant.",
+         "exit": "New rent and term agreed, or tenant says no."},
+        {"key": "terms_agreed", "label": "Terms agreed", "probability": 0.90,
+         "required_properties": ["renewal_new_rent_sar", "lease_term_months"],
+         "entry": "New rent and term agreed.",
+         "exit": "Renewal registered on Ejar."},
+        {"key": "renewed", "label": "Renewed", "probability": 1.0,
+         "required_properties": ["ejar_contract_number", "lease_end_date", "amount", "closedate"],
+         "entry": "New Ejar contract number and lease end date recorded.",
+         "exit": "Final. Unit lease end date updated."},
+        {"key": "not_renewing", "label": "Not renewing", "probability": 0.0, "required_properties": ["lost_reason"],
+         "entry": "Tenant leaves. Lost reason is mandatory, unit goes back to Vacant on lease end.",
+         "exit": "Final."}
+      ]
+    }
+  ],
+
+  "associations": [
+    {"from": "deals", "to": "re_property", "labels": [
+      {"name": "listing_for_sale", "label": "Listing for sale"}, {"name": "leased_asset", "label": "Leased asset"}]},
+    {"from": "deals", "to": "re_unit", "labels": [{"name": "leased_unit", "label": "Leased unit"}]},
+    {"from": "re_unit", "to": "re_property", "labels": [{"name": "unit_in_building", "label": "Unit in building"}]},
+    {"from": "contacts", "to": "deals", "labels": [
+      {"name": "buyer", "label": "Buyer"}, {"name": "tenant", "label": "Tenant"},
+      {"name": "broker", "label": "Broker"}, {"name": "guarantor", "label": "Guarantor"}]},
+    {"from": "contacts", "to": "re_unit", "labels": [{"name": "current_tenant", "label": "Current tenant"}]}
+  ]
+}
